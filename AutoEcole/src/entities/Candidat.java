@@ -3,7 +3,7 @@ package entities;
 import java.time.LocalDate;
 
 public class Candidat {
-	//info personnelle
+	//info
 		private int CIN ;
 		private String nom ; 
 		private String prenom ;
