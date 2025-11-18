@@ -8,7 +8,10 @@ import ui.CandidatUi;
 
 public class CandidatController {
 	private CandidatService cs=new CandidatService() ;
-	public void ajouter (Candidat c) {
+	
+	
+	public void creerCandidat () {
+		Candidat c = CandidatUi.saisirCandidat() ;
 		try {
             cs.ajouterCandidat(c);
             System.out.println("Candidat ajouté !");
@@ -16,15 +19,18 @@ public class CandidatController {
             System.out.println(e.getMessage());
         }
 	}
-	public void modifier(Candidat c) {
-        try {
-            cs.modifierCandidat(c);
-            System.out.println(" Candidat modifié !");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	public void modifier() {
+		int cin=CandidatUi.saisirCIN();
+		try {
+	        Candidat c = cs.rechercher(cin); 
+	        cs.modifierCandidat(c);         
+	        System.out.println("Candidat modifié !");
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	    }
     }
-	public void supprimer(int cin) {
+	public void supprimer() {
+		int cin = CandidatUi.saisirCIN();
         try {
             cs.supprimer(cin);
             System.out.println(" Candidat supprimé !");
@@ -32,7 +38,8 @@ public class CandidatController {
             System.out.println(e.getMessage());
         }
     }
-	 public void rechercher(int cin) {
+	 public void rechercher() {
+		 int cin = CandidatUi.saisirCIN();
 	        try {
 	            Candidat c = cs.rechercher(cin);
 	            System.out.println(c);
@@ -44,7 +51,10 @@ public class CandidatController {
 	        cs.afficherTous();
 	    }
 
-	    public void payer(int cin, int montant) {
+	 
+	 public void payer() {
+		 int cin = CandidatUi.saisirCIN();
+		 int montant = CandidatUi.saisirMontant();
 	        try {
 	            cs.payer(cin, montant);
 	            System.out.println(" Paiement effectué !");
@@ -52,5 +62,6 @@ public class CandidatController {
 	            System.out.println(e.getMessage());
 	        }
 	    }
+	 
 	 
 }

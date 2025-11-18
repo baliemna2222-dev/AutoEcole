@@ -3,11 +3,11 @@ package entities;
 import java.time.LocalDateTime;
 
 public class Seance {
-	public Seance(int num, LocalDateTime date, int prix, Candidat c) {
+	public Seance(int num, LocalDateTime date, Candidat c) {
 		super();
 		this.num = num;
 		this.date = date;
-		this.prix = prix;
+		this.prix = 0;
 		this.c = c;
 		//this.m = m;
 	}

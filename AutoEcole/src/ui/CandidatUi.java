@@ -7,7 +7,9 @@ import java.util.Scanner;
 import entities.Candidat;
 
 public class CandidatUi {
-	public static Candidat saisir() {
+	
+	
+	public static Candidat saisirCandidat() {
 		Scanner sc = new Scanner(System.in);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -20,7 +22,7 @@ public class CandidatUi {
         System.out.print("Prenom : ");
         String prenom = sc.nextLine();
 
-        System.out.print("Date de naissance (dd/MM/yyyy) : ");
+        System.out.print("Date de naissance : ");
         LocalDate datenaissance = LocalDate.parse(sc.nextLine(), df);
 
         System.out.print("Téléphone : ");
@@ -56,5 +58,27 @@ public class CandidatUi {
 
         return c;
 	}
+	
+	public static int saisirCIN () {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Entrez CIN : ");
+        return sc.nextInt();
+		
+		
+	}
+	public static int saisirMontant() {
+		Scanner sc = new Scanner(System.in);
+		int montant;
+        do {
+            System.out.print("Entrez le montant à payer : ");
+            montant = sc.nextInt();
+            if (montant <= 0) {
+                System.out.println("Montant invalide !");
+            }
+        } while (montant <= 0);
+
+        return montant;
+    }
+	
 	
 }
