@@ -24,10 +24,10 @@ public class Candidat {
 		private int prixpaye ;
 		private int reste ;
 	
-		
+		public Candidat() {
+	    }
 	public Candidat(int cIN, String nom, String prenom, LocalDate datedenaissance, int telephone, String adresse,
-			String ville, String email, String categoriepermis, boolean examencodereussi, boolean examenconduitreussi,
-			int nbreseancecode, int nbreseanceconduit) {
+			String ville, String email, String categoriepermis, boolean examencodereussi, boolean examenconduitreussi) {
 		super();
 		this.CIN = cIN;
 		this.nom = nom;
@@ -40,24 +40,24 @@ public class Candidat {
 		this.categoriepermis = categoriepermis;
 		this.examencodereussi = examencodereussi;
 		this.examenconduitreussi = examenconduitreussi;
-		this.nbreseancecode = nbreseancecode;
-		this.nbreseanceconduit = nbreseanceconduit;
-		this.prixtotale = 0;
+		this.nbreseancecode = 0;
+		this.nbreseanceconduit = 0;
+		this.prixtotale = 1000;
 		this.prixpaye=0;
-		this.reste=0 ;
+		this.reste=1000 ;
 		
 	}
 
 
 
 	public int getCIN() {
-		return CIN;
+		return this.CIN;
 	}
 
 
 
 	public void setCIN(int cIN) {
-		CIN = cIN;
+		this.CIN = cIN;
 	}
 
 
