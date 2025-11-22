@@ -1,7 +1,7 @@
 package AutoEcole;
 
 import java.util.Scanner;
-import controller.MoniteurController;
+import controllers.MoniteurController;
 import entities.Moniteur;
 
 public class menumoniteur {

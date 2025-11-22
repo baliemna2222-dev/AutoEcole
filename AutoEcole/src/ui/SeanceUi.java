@@ -1,36 +1,37 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import controllers.CandidatController;
+import controllers.MoniteurController;
 import entities.Candidat;
+import entities.Moniteur;
 import entities.Seance;
 
 public class SeanceUi {
     private CandidatController candidatController;
+    private MoniteurController mc ;
     private Scanner sc = new Scanner(System.in);
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public SeanceUi(CandidatController candidatController) {
         this.candidatController = candidatController;
     }
-
-    // Saisie complète d'une séance
     public Seance saisirSeance() {
         int num = saisirNum();
         String type = saisirType();
-        LocalDateTime date = saisirDate();
+        LocalDate date = saisirDate();
         Candidat c = candidatController.findCandidat();
         int prix = calculerPrix(c, type);
-
-        Seance seance = new Seance(type, num, date, c);
+        String heure =saisirHeure();
+        Moniteur m = mc.findMoniteur();
+        Seance seance = new Seance(type, num, date,heure, c,m);
         seance.setPrix(prix);
         return seance;
     }
-
-    // Saisie numéro de séance
     public int saisirNum() {
         int num;
         do {
@@ -41,8 +42,6 @@ public class SeanceUi {
         } while (num <= 0);
         return num;
     }
-
-    // Saisie type de séance
     public String saisirType() {
         String type;
         do {
@@ -54,16 +53,14 @@ public class SeanceUi {
         } while (!type.equalsIgnoreCase("Code") && !type.equalsIgnoreCase("Conduite"));
         return type;
     }
-
-    // Saisie date
-    public LocalDateTime saisirDate() {
-        LocalDateTime date = null;
+    public LocalDate saisirDate() {
+        LocalDate date = null;
         boolean ok = false;
         while (!ok) {
             try {
-                System.out.print("Date et heure (dd/MM/yyyy HH:mm) : ");
+                System.out.print("Date (dd/MM/yyyy) : ");
                 String str = sc.nextLine();
-                date = LocalDateTime.parse(str, formatter);
+                date = LocalDate.parse(str, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 ok = true;
             } catch (Exception e) {
                 System.out.println("Date invalide !");
@@ -71,8 +68,33 @@ public class SeanceUi {
         }
         return date;
     }
+    public String saisirHeure() {
+        String heure = null;
+        boolean valide = false;
 
-    // Calcul du prix selon type et catégorie du candidat
+        while (!valide) {
+            try {
+                System.out.print("Heure (HH:mm) : ");
+                heure = sc.nextLine();
+                if (!heure.matches("\\d{2}:\\d{2}")) {
+                    throw new Exception("Format incorrect");
+                }
+
+                String[] parts = heure.split(":");
+                int h = Integer.parseInt(parts[0]);
+                int m = Integer.parseInt(parts[1]);
+                if (h < 0 || h > 23 || m < 0 || m > 59) {
+                    throw new Exception("Heure hors limite");
+                }
+                valide = true;
+
+            } catch (Exception e) {
+                System.out.println("Heure invalide ! (exemple valide : 08:30, 14:05, 23:59)");
+            }
+        }
+
+        return heure;
+    }
     private int calculerPrix(Candidat c, String type) {
         int prix = 0;
         String cat = c.getCategoriepermis().toUpperCase();
@@ -91,7 +113,7 @@ public class SeanceUi {
                 case "D1": prix = 350; break;
                 default: prix = 0; break;
             }
-        } else { // Code
+        } else { 
             switch (cat) {
                 case "A1": prix = 200; break;
                 case "A": prix = 250; break;
@@ -108,8 +130,6 @@ public class SeanceUi {
         }
         return prix;
     }
-
-    // Saisie d’un champ spécifique pour modification
     public String saisirChamp() {
         System.out.println("Champs disponibles :");
         System.out.println("1. Type");
@@ -126,11 +146,10 @@ public class SeanceUi {
             case 4: return "candidat";
             default:
                 System.out.println("Choix invalide !");
-                return saisirChamp(); // répète jusqu'à avoir un choix valide
+                return saisirChamp(); 
         }
     }
 
-    // Saisie de la nouvelle valeur selon le champ
     public Object saisirNouvelleValeur(String champ) {
         switch (champ.toLowerCase()) {
             case "type":

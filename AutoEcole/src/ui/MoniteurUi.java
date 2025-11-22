@@ -39,13 +39,12 @@ public class MoniteurUi{
 
 	        CIN = Long.parseLong(cinStr);
 
-	        // -------- Gmail --------
+
 	        do {
 	            System.out.print("Entrer Gmail : ");
 	            gmail = sc.nextLine().trim();
 	        } while (!gmail.endsWith("@gmail.com"));
 
-	        // -------- Téléphone --------
 	        do {
 	            System.out.print("Entrer un numéro téléphone (8 chiffres) : ");
 	            telStr = sc.nextLine().trim();
@@ -53,12 +52,7 @@ public class MoniteurUi{
 
 	        telephone = Integer.parseInt(telStr);
 
-	        // -------- Disponible --------
-	        System.out.print("Disponible (true/false) : ");
-	        disponible = Boolean.parseBoolean(sc.nextLine());
-
-	        // Création objet
-	        return new Moniteur(nom, prenom, CIN, gmail, telephone, disponible);
+	        return new Moniteur(nom, prenom, CIN, gmail, telephone);
 	    }
 	    public static long saisirCIN() {
 	    	Scanner sc = new Scanner(System.in);
@@ -71,11 +65,6 @@ public class MoniteurUi{
 	        CIN = Long.parseLong(cinStr);
 	        return CIN;
 	    }
-
-	    // ===========================
-	    // Saisie d’un champ spécifique
-	    // (utile pour modifier un moniteur)
-	    // ===========================
 	    public static String saisirChamp(String champ) {
 	    	Scanner sc = new Scanner(System.in);
 	        System.out.print("Entrer nouvelle valeur pour " + champ + " : ");

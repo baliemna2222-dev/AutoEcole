@@ -8,26 +8,46 @@ public class Moniteur {
     private String gmail;
     private int telephone ;
     private boolean disponible; 
-    private double heuresTravaillees;
+    private double heuresTravaillecode;
+    private double heuresTravailleconduite;
     private String typeSeance;
     private int salaire ;
 
-	
+    public Moniteur() {
+    
+    }
 
-	public Moniteur(String nom, String prenom, long cIN, String gmail, int telephone, boolean disponible) {
+	public Moniteur(String nom, String prenom, long cIN, String gmail, int telephone) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		CIN = cIN;
 		this.gmail = gmail;
 		this.telephone = telephone;
-		this.disponible = disponible;
-		this.heuresTravaillees = 0;
+		this.disponible = true;
+		this.heuresTravaillecode = 0;
+		this.heuresTravailleconduite=0;
 		this.typeSeance = "";
 		this.salaire=0 ;
 	}
 
 	
+	public double getHeuresTravaillecode() {
+		return heuresTravaillecode;
+	}
+
+	public void setHeuresTravaillecode(double heuresTravaillecode) {
+		this.heuresTravaillecode = heuresTravaillecode;
+	}
+
+	public double getHeuresTravailleconduite() {
+		return heuresTravailleconduite;
+	}
+
+	public void setHeuresTravailleconduite(double heuresTravailleconduite) {
+		this.heuresTravailleconduite = heuresTravailleconduite;
+	}
+
 	public int getSalaire() {
 		return salaire;
 	}
@@ -85,17 +105,6 @@ public void setPrenom(String prenom) {
     public void setDisponible(boolean disponible) {
     	    this.disponible = disponible; 
     	    }
-
-
-	public double getHeuresTravaillees() {
-		return heuresTravaillees;
-	}
-
-
-	public void setHeuresTravaillees(double heuresTravaillees) {
-		this.heuresTravaillees = heuresTravaillees;
-	}
-
 
 	public String getTypeSeance() {
 		return typeSeance;

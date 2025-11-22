@@ -52,5 +52,23 @@
     "prixtotale": 1000,
     "prixpaye": 0,
     "reste": 1000
+  },
+  {
+    "CIN": 14587698,
+    "nom": "fgfg",
+    "prenom": "hjntj",
+    "datedenaissance": "2000-06-05",
+    "telephone": 545,
+    "adresse": "kljlj",
+    "ville": "lk,l",
+    "email": "kj@.",
+    "categoriepermis": "A1",
+    "examencodereussi": true,
+    "examenconduitreussi": false,
+    "nbreseancecode": 0,
+    "nbreseanceconduit": 0,
+    "prixtotale": 1000,
+    "prixpaye": 0,
+    "reste": 1000
   }
 ]

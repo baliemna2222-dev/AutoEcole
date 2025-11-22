@@ -1,17 +1,20 @@
 package entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class RdvExamen {
-	public RdvExamen(int num, LocalDateTime date, Candidat c) {
+	public RdvExamen(int num, LocalDate date, Candidat c,String type ,String heure) {
 		super();
 		this.num = num;
 		this.date = date;
 		this.prix = 0;
+		
 		this.c = c;
 	}
 	private int num ; 
-	private LocalDateTime date ;
+	private String type ;
+	private LocalDate date ;
+	private String heure ;
 	private int prix ; 
 	private Candidat c ;
 	public int getNum() {
@@ -20,10 +23,10 @@ public class RdvExamen {
 	public void setNum(int num) {
 		this.num = num;
 	}
-	public LocalDateTime getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(LocalDateTime date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	

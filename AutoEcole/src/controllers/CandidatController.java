@@ -9,7 +9,6 @@ import ui.CandidatUi;
 public class CandidatController {
     private CandidatService cs = new CandidatService();
 
-    // Créer un candidat avec vérification et répétition si erreur
     public void creerCandidat() {
         boolean ok = false;
         do {
@@ -24,14 +23,14 @@ public class CandidatController {
         } while (!ok);
     }
 
-    // Modifier un candidat existant
+
     public void modifier() {
         boolean ok = false;
         do {
             try {
                 int cin = CandidatUi.saisirCIN();
                 Candidat c = cs.rechercher(cin);
-                // On peut redemander les champs modifiés ici ou utiliser la même saisie
+            
                 cs.modifierCandidat(c);
                 System.out.println("Candidat modifié !");
                 ok = true;
@@ -41,7 +40,6 @@ public class CandidatController {
         } while (!ok);
     }
 
-    // Supprimer un candidat
     public void supprimer() {
         boolean ok = false;
         do {
@@ -56,7 +54,6 @@ public class CandidatController {
         } while (!ok);
     }
 
-    // Rechercher un candidat et afficher ses informations
     public void rechercher() {
         boolean ok = false;
         do {
@@ -70,8 +67,7 @@ public class CandidatController {
             }
         } while (!ok);
     }
-    
-    // rechercher un candidat sans afficher ses informations ;
+
     public Candidat findCandidat() {
         boolean ok = false;
         do {
@@ -87,12 +83,9 @@ public class CandidatController {
         return null ;
     }
 
-    // Afficher tous les candidats
     public void afficherTous() {
         cs.afficherTous();
     }
-
-    // Effectuer un paiement
     public void payer() {
         boolean ok = false;
         do {
@@ -108,7 +101,6 @@ public class CandidatController {
         } while (!ok);
     }
     
-    //modifierparchamp
     public void modifierChamp() {
         boolean ok = false;
         do {

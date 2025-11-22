@@ -1,33 +1,59 @@
 package entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Seance {
-	public Seance(String type ,int num, LocalDateTime date, Candidat c) {
+	
+	public Seance(String type ,int num, LocalDate date,String heure , Candidat c,Moniteur m) {
 		super();
 		this.type=type;
 		this.num = num;
 		this.date = date;
 		this.prix = 0;
 		this.c = c;
+		this.m=m;
+		this.heure=heure;
 		//this.m = m;
 		//this.v=v;
 		
 	}
+	
+	
 	  public Seance() {
 	    }
 	protected int num ;
-	protected LocalDateTime date ;
+	protected LocalDate date ;
 	protected int prix ;
 	protected Candidat c ;
 	protected String type ;
-	//private Moniteur m ;
+	private Moniteur m ;
+	private String heure ;
 	//private Vehicule v ;
 	
 	
 	public int getNum() {
 		return num;
 	}
+	public Moniteur getM() {
+		return m;
+	}
+
+
+	public void setM(Moniteur m) {
+		this.m = m;
+	}
+
+
+	public String getHeure() {
+		return heure;
+	}
+
+
+	public void setHeure(String heure) {
+		this.heure = heure;
+	}
+
+
 	public String getType() {
 		return type;
 	}
@@ -37,10 +63,10 @@ public class Seance {
 	public void setNum(int num) {
 		this.num = num;
 	}
-	public LocalDateTime getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(LocalDateTime date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	public int getPrix() {
@@ -55,17 +81,12 @@ public class Seance {
 	public void setC(Candidat c) {
 		this.c = c;
 	}
-	/*public Moniteur getM() {
+	public Moniteur getMoniteur() {
 		return m;
 	}
-	public void setM(Moniteur m) {
+	public void setMoniteur(Moniteur m) {
 		this.m = m;
 	}
-	@Override
-	public String toString() {
-		return "Seance [num=" + num + ", date=" + date + ", prix=" + prix + ", Candidat=" + c + "Moniteur "+ m+"]";
-	}
 	
-*/	
 	
 }

@@ -1,28 +1,20 @@
 package services;
 import entities.Moniteur;
+import entities.Seance;
 import repositories.MoniteurRep;
 
 	public class MoniteurServices {
 
 	    private MoniteurRep repo = new MoniteurRep();
 
-	    // ============================
-	    //         AJOUTER
-	    // ============================
 	    public void ajouter(Moniteur m) {
 	        repo.save(m);
 	    }
 
-	    // ============================
-	    //         CHERCHER
-	    // ============================
-	    public Moniteur chercher(long cin) {
+	    public Moniteur chercher(double cin) {
 	        return repo.find(cin);
 	    }
 
-	    // ============================
-	    //         SUPPRIMER
-	    // ============================
 	    public boolean supprimer(long cin) {
 	        return repo.delete(cin);
 	    }
@@ -32,7 +24,7 @@ import repositories.MoniteurRep;
 	        Moniteur m = repo.find(cin);
 
 	        if (m == null) {
-	            return false; // moniteur introuvable
+	            return false; 
 	        }
 
 	        switch (champ.toLowerCase()) {
@@ -50,7 +42,6 @@ import repositories.MoniteurRep;
 	                break;
 
 	            case "gmail":
-	                // casting obligatoire
 	                m.setGmail((String) nouvelleValeur);
 	                break;
 
@@ -61,37 +52,31 @@ import repositories.MoniteurRep;
 	            case "disponible":
 	                m.setDisponible((Boolean) nouvelleValeur);
 	                break;
-
-	            case "heures":
-	                m.setHeuresTravaillees((Double) nouvelleValeur);
-	                break;
-
 	            case "typeseance":
 	                m.setTypeSeance((String) nouvelleValeur);
 	                break;
 
 	            default:
-	                return false; // champ inexistant
+	                return false; 
 	        }
 
-	        // Sauvegarder la modification
 	        repo.save(m);
 	        return true;
 	    }
+	 /*   public boolean ajouterSeance(Moniteur m, Seance s) {
+	    	repo.addSeance(s);
+	    	
+	    }*/
+	   
+	    
 	    public void liste() {
 	        repo.findAll();
 	    }
 
-    public int calculSalaire(Moniteur m,String type) {
+    public int calculSalaire(Moniteur m) {
     	    int tarif = 0;
-    	    if (type.equals("code"))
-            tarif = 8;
-        else if (type.equals("conduite"))
-            tarif = 12;
-        else {
-        	tarif = 0;
-        }
-        m.setSalaire(m.getSalaire()+tarif);
+            tarif = (int) (8*m.getHeuresTravaillecode())+(int) (12*m.getHeuresTravailleconduite());              
+        m.setSalaire(tarif);
         repo.update(m.getCIN(), m);
         return m.getSalaire();
     }

@@ -1,7 +1,9 @@
 package controllers;
 
+import entities.Candidat;
 import entities.Moniteur;
 import services.MoniteurServices;
+import ui.CandidatUi;
 import ui.MoniteurUi;
 
 public class MoniteurController {
@@ -9,7 +11,6 @@ public class MoniteurController {
     private MoniteurServices service = new MoniteurServices();
     private MoniteurUi ui = new MoniteurUi();
 
-    // Ajouter un moniteur avec saisie console et vérification
     public void creerMoniteur() {
         boolean ok = false;
         do {
@@ -24,7 +25,6 @@ public class MoniteurController {
         } while (!ok);
     }
 
-    // Supprimer un moniteur par CIN
     public void supprimerMoniteur() {
         boolean ok = false;
         do {
@@ -42,7 +42,6 @@ public class MoniteurController {
         } while (!ok);
     }
 
-    // Rechercher et afficher un moniteur
     public void rechercherMoniteur() {
         boolean ok = false;
         do {
@@ -50,7 +49,7 @@ public class MoniteurController {
                 long cin = ui.saisirCIN();
                 Moniteur m = service.chercher(cin);
                 if (m != null) {
-                    service.liste(); // ou afficher un seul moniteur via display
+                    service.liste(); 
                 } else {
                     System.out.println("Moniteur introuvable !");
                 }
@@ -60,13 +59,26 @@ public class MoniteurController {
             }
         } while (!ok);
     }
+    
+    public Moniteur findMoniteur() {
+        boolean ok = false;
+        do {
+            try {
+                double cin = MoniteurUi.saisirCIN();
+                Moniteur c = service.chercher(cin);
+                ok = true;
+                return c;
+            } catch (Exception e) {
+                System.out.println("Erreur : " + e.getMessage() + " Veuillez réessayer.");
+            }
+        } while (!ok);
+        return null ;
+    }
 
-    // Afficher tous les moniteurs
     public void afficherTous() {
         service.liste();
     }
 
-    // Modifier un moniteur champ par champ
     public void modifierMoniteur() {
         boolean ok = false;
         do {
@@ -120,16 +132,14 @@ public class MoniteurController {
             }
         } while (!ok);
     }
-
-    // Calculer le salaire d’un moniteur
-    public void calculerSalaire() {
+ public void calculerSalaire() {
         boolean ok = false;
         do {
             try {
                 long cin = ui.saisirCIN();
                 Moniteur m = service.chercher(cin);
                 if (m != null) {
-                    int salaire = service.calculSalaire(m, m.getTypeSeance());
+                    int salaire = service.calculSalaire(m);
                     System.out.println("Salaire du moniteur : " + salaire + " DT");
                 } else {
                     System.out.println("Moniteur introuvable !");

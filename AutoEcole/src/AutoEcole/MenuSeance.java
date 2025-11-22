@@ -15,11 +15,12 @@ public class MenuSeance {
         while (!exit) {
             System.out.println("\n===== MENU SÉANCES =====");
             System.out.println("1. Ajouter une séance");
+            
             System.out.println("2. Modifier une séance");
             System.out.println("3. Supprimer une séance");
             System.out.println("4. Rechercher une séance");
             System.out.println("5. Afficher toutes les séances");
-            System.out.println("0. Quitter");
+            System.out.println("6. Quitter");
             System.out.print("Choix : ");
             String choix = sc.nextLine();
 
@@ -39,9 +40,8 @@ public class MenuSeance {
                 case "5":
                     seanceController.afficherTous();
                     break;
-                case "0":
-                    exit = true;
-                    System.out.println("Au revoir !");
+                case "6":
+                   candidatController.findCandidat();
                     break;
                 default:
                     System.out.println("Choix invalide !");
