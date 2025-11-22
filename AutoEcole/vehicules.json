@@ -1,1 +1,35 @@
 [
+  {
+    "type": "MOTO",
+    "immatricule": 656,
+    "datemiseenservice": "2022-06-06",
+    "prix": 55,
+    "kilometrageTotale": 100.0,
+    "nbkmrestant": 99900.0,
+    "echeances": [
+      {
+        "type": "VIGNETTE",
+        "dateLimite": "2025-01-31",
+        "kmRestant": 0.0,
+        "realise": false
+      },
+      {
+        "type": "VISITE_TECHNIQUE",
+        "dateLimite": "2025-01-01",
+        "kmRestant": 0.0,
+        "realise": false
+      },
+      {
+        "type": "VIDANGE",
+        "kmRestant": 99900.0,
+        "realise": false
+      },
+      {
+        "type": "ASSURANCE",
+        "dateLimite": "2025-06-06",
+        "kmRestant": 0.0,
+        "realise": false
+      }
+    ]
+  }
+]

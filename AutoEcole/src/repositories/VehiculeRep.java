@@ -19,15 +19,16 @@ public class VehiculeRep {
     private List<Vehicule> voitures = new ArrayList<>();
     private List<Vehicule> camions = new ArrayList<>();
     private List<Vehicule> autobus = new ArrayList<>();
-    List<Vehicule> all = new ArrayList<>();
-    List<Reparation> reparations = new ArrayList<>();
+    private List<Vehicule> all = new ArrayList<>();
+    private List<Reparation> reparations = new ArrayList<>();
 
     private final String VEHICULES_FILE = "vehicules.json";
     private final String REPARATIONS_FILE = "reparations.json";
 
-    // Adapter Gson pour LocalDate
+    // ==================== ADAPTERS ====================
+
     static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
-        private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
         @Override
         public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
@@ -40,15 +41,31 @@ public class VehiculeRep {
         }
     }
 
+    static class TypeVehiculeAdapter implements JsonSerializer<TypeVehicule>, JsonDeserializer<TypeVehicule> {
+        @Override
+        public JsonElement serialize(TypeVehicule src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.name());
+        }
+
+        @Override
+        public TypeVehicule deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return TypeVehicule.valueOf(json.getAsString());
+        }
+    }
+
+    // ==================== CONSTRUCTEUR ====================
+
     public VehiculeRep() {
         loadVehicules();
         loadReparations();
     }
 
+    // ==================== CRUD VEHICULE ====================
+
     public boolean ajouter(Vehicule v) {
         for (Vehicule e : all) {
             if (e.getImmatricule() == v.getImmatricule()) {
-                System.out.println("Immatricule existe deja !");
+                System.out.println("Immatricule existe déjà !");
                 return false;
             }
         }
@@ -69,27 +86,6 @@ public class VehiculeRep {
             if (v.getImmatricule() == immatricule) return v;
         }
         return null;
-    }
-
-    public boolean modifier(Vehicule v, Vehicule nouveau) {
-        int immatricule = v.getImmatricule();
-        List<Vehicule> liste;
-        switch (v.getType()) {
-            case MOTO: liste = motos; break;
-            case VOITURE: liste = voitures; break;
-            case CAMION: liste = camions; break;
-            default: liste = autobus; break;
-        }
-        for (int i = 0; i < liste.size(); i++) {
-            if (liste.get(i).getImmatricule() == immatricule) {
-                liste.set(i, nouveau);
-                saveVehicules();
-                System.out.println("Véhicule modifié !");
-                return true;
-            }
-        }
-        System.out.println("Véhicule non trouvé !");
-        return false;
     }
 
     public void supprimer(int immatricule) {
@@ -118,10 +114,6 @@ public class VehiculeRep {
         return all;
     }
 
-    public void getListe(List<Vehicule> l) {
-        for (Vehicule v : l) displayVehicule(v);
-    }
-
     public void afficherTous() {
         System.out.println("===== LISTE DES VEHICULES =====");
         for (Vehicule v : all) displayVehicule(v);
@@ -147,12 +139,16 @@ public class VehiculeRep {
             if (v.getEcheances() == null) continue;
             for (Echeance e : v.getEcheances()) {
                 if (e == null) continue;
-                if (e.estExpiree()) alertes.add("⚠️ EXPIREE | " + e.getType() + " | Vehicule: " + v.getImmatricule() + " | Date limite: " + e.getDateLimite());
-                else if (e.estProche()) alertes.add("⚠️ PROCHAINE | " + e.getType() + " | Vehicule: " + v.getImmatricule() + " | Date limite: " + e.getDateLimite());
+                if (e.estExpiree())
+                    alertes.add("⚠️ EXPIREE | " + e.getType() + " | Vehicule: " + v.getImmatricule() + " | Date limite: " + e.getDateLimite());
+                else if (e.estProche())
+                    alertes.add("⚠️ PROCHAINE | " + e.getType() + " | Vehicule: " + v.getImmatricule() + " | Date limite: " + e.getDateLimite());
             }
         }
         for (String s : alertes) System.out.println(s);
     }
+
+    // ==================== REPARATIONS ====================
 
     public void ajouterReparation(int immatricule, Reparation r) {
         Vehicule v = rechercher(immatricule);
@@ -178,11 +174,15 @@ public class VehiculeRep {
         }
     }
 
-    // ----------------- JSON -----------------
+    // ==================== JSON ====================
 
     private void saveVehicules() {
-        try (Writer writer = new FileWriter("vehicules.json")) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        try (Writer writer = new FileWriter(VEHICULES_FILE)) {
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .registerTypeAdapter(TypeVehicule.class, new TypeVehiculeAdapter())
+                    .create();
             gson.toJson(all, writer);
         } catch (IOException e) {
             System.out.println("Erreur sauvegarde véhicules : " + e.getMessage());
@@ -190,12 +190,32 @@ public class VehiculeRep {
     }
 
     private void loadVehicules() {
-        try (Reader reader = new FileReader("vehicules.json")) {
-            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        File file = new File(VEHICULES_FILE);
+        if (!file.exists() || file.length() == 0) {
+            System.out.println("⚠ Fichier véhicules non trouvé ou vide, création d'un nouveau.");
+            all = new ArrayList<>();
+            motos.clear(); voitures.clear(); camions.clear(); autobus.clear();
+            return;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) sb.append(line.trim());
+            String json = sb.toString();
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .registerTypeAdapter(TypeVehicule.class, new TypeVehiculeAdapter())
+                    .create();
             Type listType = new TypeToken<List<Vehicule>>() {}.getType();
-            all = gson.fromJson(reader, listType);
-            if (all == null) all = new ArrayList<>();
-            // remplir les listes par type
+
+            if (json.isEmpty() || json.equals("[]")) {
+                all = new ArrayList<>();
+            } else {
+                all = gson.fromJson(json, listType);
+                if (all == null) all = new ArrayList<>();
+            }
+
             motos.clear(); voitures.clear(); camions.clear(); autobus.clear();
             for (Vehicule v : all) {
                 switch (v.getType()) {
@@ -205,16 +225,20 @@ public class VehiculeRep {
                     default: autobus.add(v); break;
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("⚠ Fichier véhicules non trouvé, création d'un nouveau.");
-        } catch (IOException e) {
+
+        } catch (IOException | JsonSyntaxException e) {
             System.out.println("Erreur chargement véhicules : " + e.getMessage());
+            all = new ArrayList<>();
+            motos.clear(); voitures.clear(); camions.clear(); autobus.clear();
         }
     }
 
     private void saveReparations() {
-        try (Writer writer = new FileWriter("reparations.json")) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        try (Writer writer = new FileWriter(REPARATIONS_FILE)) {
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             gson.toJson(reparations, writer);
         } catch (IOException e) {
             System.out.println("Erreur sauvegarde réparations : " + e.getMessage());
@@ -222,15 +246,32 @@ public class VehiculeRep {
     }
 
     private void loadReparations() {
-        try (Reader reader = new FileReader("reparations.json")) {
-            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        File file = new File(REPARATIONS_FILE);
+        if (!file.exists() || file.length() == 0) {
+            System.out.println("⚠ Fichier réparations non trouvé ou vide, création d'un nouveau.");
+            reparations = new ArrayList<>();
+            return;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) sb.append(line.trim());
+            String json = sb.toString();
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             Type listType = new TypeToken<List<Reparation>>() {}.getType();
-            reparations = gson.fromJson(reader, listType);
-            if (reparations == null) reparations = new ArrayList<>();
-        } catch (FileNotFoundException e) {
-            System.out.println("⚠ Fichier réparations non trouvé, création d'un nouveau.");
-        } catch (IOException e) {
+
+            if (json.isEmpty() || json.equals("[]")) {
+                reparations = new ArrayList<>();
+            } else {
+                reparations = gson.fromJson(json, listType);
+                if (reparations == null) reparations = new ArrayList<>();
+            }
+        } catch (IOException | JsonSyntaxException e) {
             System.out.println("Erreur chargement réparations : " + e.getMessage());
+            reparations = new ArrayList<>();
         }
     }
 }

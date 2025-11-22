@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ui.TypeVehicule;
-
 public class Vehicule {
+	public Vehicule() {}
 	public Vehicule(TypeVehicule type, int immatricule, LocalDate datemiseenservice, int prix, float kilometrageTotale,
 			float nbkmrestant,List<Echeance> e) {
 		super();
