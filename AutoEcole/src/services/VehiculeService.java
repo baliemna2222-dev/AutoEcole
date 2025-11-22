@@ -3,12 +3,13 @@ package services;
 import java.time.LocalDate;
 import java.util.List;
 
+import entities.Reparation;
 import entities.Vehicule;
 import repositories.VehiculeRep;
 import ui.TypeVehicule;
 
 public class VehiculeService {
-	private VehiculeRep repository;
+	private VehiculeRep repository= new VehiculeRep();
     
     public void ajouterVehicule(Vehicule v) {
         float kmRestant = 100000 - v.getKilometrageTotale();
@@ -86,6 +87,16 @@ public class VehiculeService {
         } else {
             System.out.println("❌ Véhicule introuvable !");
         }
+    }
+    
+    public void afficheralerte () {
+    	repository.getAlertes();
+    }
+    public void afficherreparation() {
+    	repository.afficherrepartions();
+    }
+    public void ajouterrepartions(int matricule,Reparation r) {
+    	repository.ajouterReparation(matricule, r);
     }
 }
 

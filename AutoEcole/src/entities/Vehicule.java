@@ -1,12 +1,14 @@
 package entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import ui.TypeVehicule;
 
 public class Vehicule {
 	public Vehicule(TypeVehicule type, int immatricule, LocalDate datemiseenservice, int prix, float kilometrageTotale,
-			float nbkmrestant) {
+			float nbkmrestant,List<Echeance> e) {
 		super();
 		this.type = type;
 		
@@ -15,6 +17,9 @@ public class Vehicule {
 		this.prix = prix;
 		this.kilometrageTotale = kilometrageTotale;
 		this.nbkmrestant = nbkmrestant;
+		this.echeances=e;
+	
+		
 	}
 	private TypeVehicule type ;
 	private int immatricule ; 
@@ -22,6 +27,15 @@ public class Vehicule {
 	private int prix ; 
 	private float kilometrageTotale ;
 	private float nbkmrestant ;
+	private List<Echeance> echeances = new ArrayList<>();
+
+	
+	public List<Echeance> getEcheances() {
+		return echeances;
+	}
+	public void setEcheances(List<Echeance> echeances) {
+		this.echeances = echeances;
+	}
 	public TypeVehicule getType() {
 		return type;
 	}

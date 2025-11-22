@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import entities.Reparation;
 import entities.Vehicule;
 import services.VehiculeService;
 import ui.VehiculeUi;
@@ -33,6 +34,18 @@ public class VehiculeController {
     }
     public void afficherTousVehicules() {
         service.afficherTousVehicules();
+    }
+    
+    public void afficherAlertes() {
+        service.afficheralerte();
+    }
+    public void afficherReparations() {
+        service.afficherreparation();
+    }
+    public void ajouterrepation() {
+    	int immatricule = vui.lireInt("Immatricule");
+    	Reparation r =vui.saisirReparation(immatricule) ;
+    	service.ajouterrepartions(immatricule,r);
     }
 
 }
